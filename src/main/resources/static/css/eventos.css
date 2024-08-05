@@ -1,0 +1,11 @@
+/*Los siguientes estilos son para el eventos.html */
+.header-container {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px;
+}
+
+.header-container h1 {
+	margin: 0;
+}

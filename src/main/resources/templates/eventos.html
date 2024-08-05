@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Eventos</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/css/eventos.css" />
+</head>
+
+<body>
+	<div class="container">
+		<div class="header-container">
+			<h1>Eventos Disponibles</h1>
+			<form th:action="@{/logout}" method="post">
+				<button type="submit" class="btn btn-secondary">Cerrar Sesión</button>
+			</form>
+		</div>
+		<table class="table table-bordered mt-4">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Nombre</th>
+					<th>Fecha</th>
+					<th>Descripción</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="evento : ${eventos}">
+					<td th:text="${evento.id}"></td>
+					<td th:text="${evento.nombre}"></td>
+					<td th:text="${evento.fecha}"></td>
+					<td th:text="${evento.descripcion}"></td>
+					<td>
+						<a th:href="@{/admin/usuarios/{id}(id=${evento.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2 class="mt-5">Añadir Nuevo Evento</h2>
+		<form action="/admin/usuarios/add" method="post">
+			<div class="form-group">
+				<label for="nombre">Nombre</label>
+				<input type="text" class="form-control" id="nombre" name="nombre" required>
+			</div>
+			<div class="form-group">
+				<label for="fecha">Fecha</label>
+				<input type="date" class="form-control" id="fecha" name="fecha" required>
+			</div>
+			<div class="form-group">
+				<label for="ubicacion">Ubicación</label>
+				<input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+			</div>
+			<button type="submit" class="btn btn-primary">Guardar Evento</button>
+		</form>
+
+	</div>
+
+	<!-- Scripts necesarios para Bootstrap -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
