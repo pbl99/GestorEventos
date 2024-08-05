@@ -59,4 +59,12 @@ public class Evento {
 		this.date = date;
 	}
 
+	public Set<Usuario> getUsers() {
+		return users;
+	}
+
+	public void setUsers(Set<Usuario> users) {
+		this.users = users;
+	}
+
 }

@@ -60,4 +60,12 @@ public class Usuario {
 		this.password = password;
 	}
 
+	public Set<Evento> getEvents() {
+		return events;
+	}
+
+	public void setEvents(Set<Evento> events) {
+		this.events = events;
+	}
+
 }
