@@ -34,4 +34,9 @@ public class EventoServiceImpl implements IEventoService {
 	public List<Evento> findAll() {
 		return eventoRepository.findAll();
 	}
+	
+	@Override
+	public List<Evento> findByUsuarioId(Long id){
+		return eventoRepository.findByUsuarioId(id);
+	}
 }

@@ -1,16 +1,18 @@
 package com.palmen.gestion.eventos.models;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
+
 
 @Entity
 @Table(name = "usuarios")
@@ -24,9 +26,9 @@ public class Usuario {
 	private String name;
 	private String password;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "eventos_usuario", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "evento_id"))
-	private Set<Evento> events;
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private Set<Evento> eventos = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -60,12 +62,12 @@ public class Usuario {
 		this.password = password;
 	}
 
-	public Set<Evento> getEvents() {
-		return events;
+	public Set<Evento> getEventos() {
+		return eventos;
 	}
 
-	public void setEvents(Set<Evento> events) {
-		this.events = events;
+	public void setEventos(Set<Evento> events) {
+		this.eventos = events;
 	}
 
 }

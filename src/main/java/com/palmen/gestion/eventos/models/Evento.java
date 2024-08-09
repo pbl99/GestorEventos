@@ -1,13 +1,12 @@
 package com.palmen.gestion.eventos.models;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,8 +23,9 @@ public class Evento {
 
 	private LocalDateTime date;
 
-	@ManyToMany(mappedBy = "events")
-	private Set<Usuario> users;
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 
 	public Long getId() {
 		return id;
@@ -59,12 +59,14 @@ public class Evento {
 		this.date = date;
 	}
 
-	public Set<Usuario> getUsers() {
-		return users;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setUsers(Set<Usuario> users) {
-		this.users = users;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
+
+
 
 }

@@ -14,4 +14,6 @@ public interface IEventoService {
 	Optional<Evento> findById(Long id);
 
 	List<Evento> findAll();
+
+	List<Evento> findByUsuarioId(Long id);
 }

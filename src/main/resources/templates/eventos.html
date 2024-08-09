@@ -26,33 +26,38 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="evento : ${eventos}">
-					<td th:text="${evento.id}"></td>
-					<td th:text="${evento.nombre}"></td>
-					<td th:text="${evento.fecha}"></td>
-					<td th:text="${evento.descripcion}"></td>
+				<tr th:each="evento, iterStat : ${eventos}">
+					<td th:text="${iterStat.index + 1}"></td>
+					<td th:text="${evento.name}"></td>
+					<td th:text="${evento.date}"></td>
+					<td th:text="${evento.description}"></td>
 					<td>
-						<a th:href="@{/admin/usuarios/{id}(id=${evento.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+						<form th:action="@{/api/eventos/eliminar/{id}(id=${evento.id})}" method="post">
+							<input type="hidden" name="_method" value="delete" />
+							<button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+						</form>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 
 		<h2 class="mt-5">Añadir Nuevo Evento</h2>
-		<form action="/admin/usuarios/add" method="post">
+		<form th:action="@{/api/eventos/crearEvento}" th:object="${evento}" method="post">
 			<div class="form-group">
-				<label for="nombre">Nombre</label>
-				<input type="text" class="form-control" id="nombre" name="nombre" required>
+				<label for="name">Nombre</label>
+				<input type="text" class="form-control" id="name" name="name" th:field="*{name}" required>
 			</div>
 			<div class="form-group">
 				<label for="fecha">Fecha</label>
-				<input type="date" class="form-control" id="fecha" name="fecha" required>
+				<input type="datetime-local" class="form-control" id="fecha" name="fecha" th:field="*{date}" required>
 			</div>
 			<div class="form-group">
-				<label for="ubicacion">Ubicación</label>
-				<input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+				<label for="descripcion">Descripción</label>
+				<input type="text" class="form-control" id="descripcion" name="descripcion" th:field="*{description}"
+					required>
 			</div>
-			<button type="submit" class="btn btn-primary">Guardar Evento</button>
+			<input type="hidden" name="usuarioEmail" th:value="${usuario.email}">
+			<input type="submit" class="btn btn-primary" value="Guardar Evento"></input>
 		</form>
 
 	</div>
