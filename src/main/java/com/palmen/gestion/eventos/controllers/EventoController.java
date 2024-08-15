@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.palmen.gestion.eventos.models.EmailDTO;
 import com.palmen.gestion.eventos.models.Evento;
 import com.palmen.gestion.eventos.models.Usuario;
+import com.palmen.gestion.eventos.services.IEmailService;
 import com.palmen.gestion.eventos.services.IEventoService;
 import com.palmen.gestion.eventos.services.IUsuarioService;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -31,6 +34,9 @@ public class EventoController {
 
 	@Autowired
 	private IUsuarioService usuarioService;
+
+	@Autowired
+	private IEmailService emailService;
 
 	@GetMapping("/eventos")
 	public String eventos(Evento evento, HttpSession session, Model model) {
@@ -46,13 +52,26 @@ public class EventoController {
 	}
 
 	@PostMapping("/crearEvento")
-	public String crearEvento(@RequestParam("usuarioEmail") String usuarioEmail, Evento evento) {
+	public String crearEvento(@RequestParam("usuarioEmail") String usuarioEmail, Evento evento)
+			throws MessagingException {
 
 		Usuario usuario = usuarioService.findByEmail(usuarioEmail).orElse(null);
 
 		if (usuario != null) {
 			evento.setUsuario(usuario);
 			eventoService.save(evento);
+
+			// Crear el mensaje del correo con los detalles del evento
+			String mensaje = String.format(
+					"Hola %s,\n\nSe ha creado un nuevo evento:\n\nNombre: %s\nFecha: %s\nDescripción: %s\n\n¡Esperamos verte allí!",
+					usuario.getName(), evento.getName(), evento.getDate().toString(), evento.getDescription());
+
+			EmailDTO email = new EmailDTO();
+			email.setDestinatario(usuario.getEmail());
+			email.setAsunto("Nuevo evento creado: " + evento.getName());
+			email.setMensaje(mensaje);
+
+			emailService.sendEmail(email);
 		}
 
 		return "redirect:/api/eventos/eventos";

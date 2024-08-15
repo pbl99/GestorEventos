@@ -1,5 +1,6 @@
 package com.palmen.gestion.eventos.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +17,8 @@ public interface IEventoService {
 	List<Evento> findAll();
 
 	List<Evento> findByUsuarioId(Long id);
+	
+	List<Evento> findByDate(LocalDateTime date);
+	
+	List<Evento> findEventosInNextHour(LocalDateTime start, LocalDateTime end);
 }
